@@ -16,7 +16,7 @@ extern "C" void VMUnloadModule(void);
 VMSTART & TICK
 */
 
-TVMStatus VMStart(int tickms, TVMMemorySize sharedsize, int argc, char *argv[]) {    
+TVMStatus VMStart(int tickms, TVMMemorySize sharedsize, const char *mount, int argc, char *argv[]) {    
     TVMMainEntry main = VMLoadModule(argv[0]);
     if (!main) return VM_STATUS_FAILURE;    
     TVMStackBase base = (TVMStackBase)MachineInitialize(sharedsize);

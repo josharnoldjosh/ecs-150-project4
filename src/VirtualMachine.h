@@ -1,6 +1,8 @@
 #ifndef VIRTUALMACHINE_H 	 	    		
 #define VIRTUALMACHINE_H
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -16,7 +18,8 @@ extern "C" {
 #define VM_THREAD_STATE_RUNNING                 ((TVMThreadState)0x01)
 #define VM_THREAD_STATE_READY                   ((TVMThreadState)0x02)
 #define VM_THREAD_STATE_WAITING                 ((TVMThreadState)0x03)
-                                                
+
+#define VM_THREAD_PRIORITY_IDLE                  ((TVMThreadPriority)0x00)                                                
 #define VM_THREAD_PRIORITY_LOW                  ((TVMThreadPriority)0x01)
 #define VM_THREAD_PRIORITY_NORMAL               ((TVMThreadPriority)0x02)
 #define VM_THREAD_PRIORITY_HIGH                 ((TVMThreadPriority)0x03)
@@ -28,6 +31,7 @@ extern "C" {
 #define VM_TIMEOUT_INFINITE                     ((TVMTick)0)
 #define VM_TIMEOUT_IMMEDIATE                    ((TVMTick)-1)
 
+#define VM_CHUNK_SIZE                           (unsigned int)512
 #define VM_FILE_SYSTEM_MAX_PATH                 256
 #define VM_FILE_SYSTEM_SFN_SIZE                 13
 #define VM_FILE_SYSTEM_LFN_SIZE                 VM_FILE_SYSTEM_MAX_PATH
@@ -47,6 +51,7 @@ typedef unsigned int TVMThreadID, *TVMThreadIDRef;
 typedef unsigned int TVMMutexID, *TVMMutexIDRef;
 typedef unsigned int TVMThreadPriority, *TVMThreadPriorityRef;  
 typedef unsigned int TVMThreadState, *TVMThreadStateRef;  
+typedef uint8_t* TVMStackBase;
 
 typedef struct{
     unsigned int DYear;
