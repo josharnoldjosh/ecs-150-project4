@@ -105,6 +105,12 @@ TVMStatus VMFileWrite(int filedescriptor, void *data, int *length);
 TVMStatus VMFileSeek(int filedescriptor, int offset, int whence, int *newoffset);
 TVMStatus VMFilePrint(int filedescriptor, const char *format, ...);
 
+TVMStatus Internal_VMFileOpen(const char *filename, int flags, int mode, int *filedescriptor);
+TVMStatus Internal_VMFileClose(int filedescriptor);
+TVMStatus Internal_VMFileRead(int filedescriptor, void *data, int *length);
+TVMStatus Internal_VMFileWrite(int filedescriptor, void *data, int *length);
+TVMStatus Internal_VMFileSeek(int filedescriptor, int offset, int whence, int *newoffset);
+
 TVMStatus VMDateTime(SVMDateTimeRef curdatetime);
 
 TVMStatus VMDirectoryOpen(const char *dirname, int *dirdescriptor);

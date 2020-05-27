@@ -24,6 +24,7 @@ OBJS=$(OBJ_DIR)/Machine.o \
      $(OBJ_DIR)/Global.o \
      $(OBJ_DIR)/Mutex.o \
      $(OBJ_DIR)/MemoryBlock.o \
+	 $(OBJ_DIR)/FAT.o \
      $(OBJ_DIR)/main.o
 
 MODOBJS=$(OBJ_DIR)/module.o

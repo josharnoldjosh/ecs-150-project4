@@ -5,6 +5,7 @@
 #include "Thread.h"
 #include "Mutex.h"
 #include "MemoryBlock.h"
+#include "FAT.h"
 #include <vector>
 #include <deque>
 
@@ -20,5 +21,6 @@ extern deque < Thread* > dead_queue;
 extern deque < MemoryBlock* > memory_queue;
 extern TVMThreadID current_thread;
 void global_init(int tickms, TVMMemorySize sharedsize, TVMStackBase &base, bool &success);
+extern BPB* bpb;
 
 #endif

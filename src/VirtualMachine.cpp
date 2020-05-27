@@ -5,8 +5,9 @@
 #include "Skeleton.h"
 #include "Manager.h"
 #include "Mutex.h"
+#include "FAT.h"
 #include <stdio.h>
-#include <math.h>     
+#include <math.h>
 #include <string.h>  
 
 extern "C" TVMMainEntry VMLoadModule(const char *module);
@@ -27,6 +28,7 @@ TVMStatus VMStart(int tickms, TVMMemorySize sharedsize, const char *mount, int a
     create_main_thread();    
     MachineRequestAlarm(1000*tickms, (TMachineAlarmCallback)&timer, NULL);                        
     MachineEnableSignals();    
+    read_bpb(mount);
     main(argc, argv);
     VMUnloadModule();
     MachineTerminate();
@@ -289,6 +291,30 @@ FILE FUNCTIONS
 */
 
 TVMStatus VMFileOpen(const char *filename, int flags, int mode, int *filedescriptor) {
+    return Internal_VMFileOpen(filename, flags, mode, filedescriptor);
+}
+
+TVMStatus VMFileClose(int filedescriptor) {
+    return Internal_VMFileClose(filedescriptor);
+}
+
+TVMStatus VMFileRead(int filedescriptor, void *data, int *length) {
+    return Internal_VMFileRead(filedescriptor, data, length);
+}
+
+TVMStatus VMFileWrite(int filedescriptor, void *data, int *length) {
+    return Internal_VMFileWrite(filedescriptor, data, length);
+}
+
+TVMStatus VMFileSeek(int filedescriptor, int offset, int whence, int *newoffset) {
+    return Internal_VMFileSeek(filedescriptor, offset, whence, newoffset);
+}
+
+/*
+INTERNAL VM FILE FUNCTIONS
+*/
+
+TVMStatus Internal_VMFileOpen(const char *filename, int flags, int mode, int *filedescriptor) {
     TMachineSignalState state;
     MachineSuspendSignals(&state);
     if (filename == NULL || filedescriptor == NULL) {
@@ -305,10 +331,10 @@ TVMStatus VMFileOpen(const char *filename, int flags, int mode, int *filedescrip
         return VM_STATUS_FAILURE;
     }
     MachineResumeSignals(&state);
-    return VM_STATUS_SUCCESS;
+    return VM_STATUS_SUCCESS;    
 }
 
-TVMStatus VMFileClose(int filedescriptor) {
+TVMStatus Internal_VMFileClose(int filedescriptor) {
     TMachineSignalState state;
     MachineSuspendSignals(&state);    
     Thread* thread = all_threads[current_thread];
@@ -323,7 +349,7 @@ TVMStatus VMFileClose(int filedescriptor) {
     return VM_STATUS_SUCCESS;
 }
 
-TVMStatus VMFileRead(int filedescriptor, void *data, int *length) {
+TVMStatus Internal_VMFileRead(int filedescriptor, void *data, int *length) {
     TMachineSignalState state;
     MachineSuspendSignals(&state);
     if (data == NULL || length == NULL) {
@@ -359,7 +385,7 @@ TVMStatus VMFileRead(int filedescriptor, void *data, int *length) {
     return VM_STATUS_SUCCESS;
 }
 
-TVMStatus VMFileWrite(int filedescriptor, void *data, int *length) {
+TVMStatus Internal_VMFileWrite(int filedescriptor, void *data, int *length) {
     TMachineSignalState state;
     MachineSuspendSignals(&state);        
     if (data == NULL || length == NULL) {
@@ -395,7 +421,7 @@ TVMStatus VMFileWrite(int filedescriptor, void *data, int *length) {
     return VM_STATUS_SUCCESS;
 }
 
-TVMStatus VMFileSeek(int filedescriptor, int offset, int whence, int *newoffset) {
+TVMStatus Internal_VMFileSeek(int filedescriptor, int offset, int whence, int *newoffset) {
     TMachineSignalState state;
     MachineSuspendSignals(&state);    
     Thread* thread = all_threads[current_thread];

@@ -17,6 +17,7 @@ deque < Thread* > wait_queue;
 deque < Thread* > dead_queue;
 deque < MemoryBlock* > memory_queue;
 TVMThreadID current_thread;
+BPB* bpb;
 
 void init_tick_ms(int tickms) {
     tick_ms = tickms;
@@ -41,8 +42,13 @@ void init_shared_memory(TVMMemorySize sharedsize, TVMStackBase &base, bool &succ
     success = true;
 }
 
+void init_bpb() {
+    bpb = new BPB();
+}
+
 void global_init(int tickms, TVMMemorySize sharedsize, TVMStackBase &base, bool &success) {
     init_tick_ms(tickms);
     init_ready_queue();
-    init_shared_memory(sharedsize, base, success);    
+    init_shared_memory(sharedsize, base, success);        
+    init_bpb();
 }
