@@ -17,7 +17,11 @@ deque < Thread* > wait_queue;
 deque < Thread* > dead_queue;
 deque < MemoryBlock* > memory_queue;
 TVMThreadID current_thread;
+
 BPB* bpb;
+uint8_t *fat;
+uint8_t* root_directory_pointer;
+vector< Directory* >* directories;
 
 void init_tick_ms(int tickms) {
     tick_ms = tickms;

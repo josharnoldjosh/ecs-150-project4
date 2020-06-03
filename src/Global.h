@@ -22,5 +22,8 @@ extern deque < MemoryBlock* > memory_queue;
 extern TVMThreadID current_thread;
 void global_init(int tickms, TVMMemorySize sharedsize, TVMStackBase &base, bool &success);
 extern BPB* bpb;
+extern uint8_t *fat;
+extern uint8_t* root_directory_pointer;
+extern vector< Directory* >* directories;
 
 #endif

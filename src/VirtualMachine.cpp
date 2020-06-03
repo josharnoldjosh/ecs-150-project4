@@ -28,7 +28,11 @@ TVMStatus VMStart(int tickms, TVMMemorySize sharedsize, const char *mount, int a
     create_main_thread();    
     MachineRequestAlarm(1000*tickms, (TMachineAlarmCallback)&timer, NULL);                        
     MachineEnableSignals();    
+
     read_bpb(mount);
+    read_fat(mount);
+    create_root_directory(mount);
+
     main(argc, argv);
     VMUnloadModule();
     MachineTerminate();
